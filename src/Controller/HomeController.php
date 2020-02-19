@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class HomeController extends AbstractController
 {
@@ -28,7 +29,8 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/admin", name="home_admin")
+      * @IsGranted("ROLE_USER")
+     * @Route("/test", name="home_admin")
      */
     public function home_admin()
     {

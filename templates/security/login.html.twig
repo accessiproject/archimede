@@ -4,15 +4,15 @@
 
 {% block body %}
 <form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
     <legend>
         <h1 class="h3 mb-3 font-weight-normal">Espace d'authentification</h1>
     </legend>
     <fieldset>
         <label for="inputUsername">Nom d'utilisateur ou adresse email :</label>
         <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="Entrez votre nom d'utilisateur ou votre adresse email" required>
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
         <label for="inputPassword">Mot de passe :</label>
         <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Entrez votre mot de passe" required>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
