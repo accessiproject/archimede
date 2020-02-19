@@ -18,6 +18,16 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=180)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $lastname;
+
+    /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
@@ -38,11 +48,40 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdat;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    public function getFirstname(): string
+    {
+        return (string) $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): string
+    {
+        return (string) $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+    
     /**
      * A visual identifier that represents this user.
      *
@@ -121,5 +160,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getCreatedat(): ?\DateTimeInterface
+    {
+        return $this->createdat;
+    }
+
+    public function setCreatedat(\DateTimeInterface $createdat): self
+    {
+        $this->createdat = $createdat;
+
+        return $this;
     }
 }
