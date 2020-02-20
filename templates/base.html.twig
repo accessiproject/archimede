@@ -2,23 +2,24 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <title>SymBnB - {% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet"  href="{{ asset('css/main.css') }}"> 
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        <nav role="navigation aria-label="Menu principal">
-            <ul>
-                <li>
-                    {% if app.user %}
-                        <a href="{{ path('app_logout') }}">Déconnexion</a>
-                    {% else %}
-                        <a href="{{ path('app_login') }}">Connexion</a>
-                        <a href="{{ path('user_edit') }}">Créer un compte</a>
-                    {% endif %}
-                </li>
-            </ul>
-        </nav>
+        {% include 'partials/header.html.twig' %}
+
         {% block body %}{% endblock %}
+
+        {% include 'partials/footer.html.twig' %}
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
