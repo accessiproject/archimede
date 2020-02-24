@@ -25,34 +25,39 @@ class UserController extends AbstractController
             'users' => $users,
         ]);
     }
-    
+
     /**
-     * @Route("/user", name="user_edit")
+     * @Route("/edition-utilisateur/{id}", name="user_edit")
      */
-    public function user_edit(Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $manager)
+    public function user_edit($id, Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $manager)
     {
-        $user = new User();
+
+        if ($id > 0)
+            $user = $manager->getRepository(User::class)->find($id);
+        else
+            $user = new User();
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             // Encode le mot de passe
-            //$password = $passwordEncoder->encodePassword($user, $user->getPassword());
-            //$user->setPassword();
-            $user->setCreatedat(new \DateTime('now'));    
+            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
+
             $user->setRoles(["ROLE_USER"]);
-            
+
+            $user->setCreatedat(new \DateTime('now'));
+
             // Enregistre le membre en base
-            
-            
             $manager->persist($user);
             $manager->flush();
             return $this->redirectToRoute('app_login');
-            
         }
         return $this->render('user/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'id' => $user->getId() ? $user->getId() : 0
         ]);
     }
 }
