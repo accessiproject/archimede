@@ -39,8 +39,14 @@ class UserController extends AbstractController
         else
             $user = new User();
 
-        $form = $this->createForm(UserType::class, $user);
+            if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
+                $type="edit_admin";
+        else
+                $type="edit_user";
+        
+        $form = $this->createForm(UserType::class, $user, ['action_type' => $type]);
         $form->handleRequest($request);
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
 
