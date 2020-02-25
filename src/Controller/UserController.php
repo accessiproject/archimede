@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Service\Mailer;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class UserController extends AbstractController
 {
@@ -29,7 +31,7 @@ class UserController extends AbstractController
     /**
      * @Route("/edition-utilisateur/{id}", name="user_edit")
      */
-    public function user_edit($id, Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $manager)
+    public function user_edit($id, Request $request, Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $manager)
     {
 
         if ($id > 0)
@@ -46,13 +48,22 @@ class UserController extends AbstractController
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
-            $user->setRoles(["ROLE_USER"]);
+            //$user->setRoles(["ROLE_USER"]);
 
             $user->setCreatedat(new \DateTime('now'));
 
             // Enregistre le membre en base
             $manager->persist($user);
             $manager->flush();
+            
+            // on utilise le service Mailer créé précédemment
+            /*
+            $bodyMail = $mailer->createBodyMail('mail/creation.html.twig', [
+                'user' => $user
+            ]);
+            $mailer->sendMessage('kevin.bustamante@mail.novancia.fr', $user->getEmail(), 'Création compte', $bodyMail);
+            $request->getSession()->getFlashBag()->add('success', "Un mail va vous être envoyé afin que vous puissiez renouveller votre mot de passe. Le lien que vous recevrez sera valide 24h.");
+            */
             return $this->redirectToRoute('app_login');
         }
         return $this->render('user/edit.html.twig', [

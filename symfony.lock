@@ -136,7 +136,7 @@
         ]
     },
     "php": {
-        "version": "7.3"
+        "version": "7.2"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
@@ -201,6 +201,9 @@
             "./bin/console",
             "./config/bootstrap.php"
         ]
+    },
+    "symfony/contracts": {
+        "version": "v1.1.0"
     },
     "symfony/css-selector": {
         "version": "v4.3.11"
